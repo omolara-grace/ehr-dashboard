@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointments - GoodLife</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body style="background-color: #f8f9fa;">
+  <nav class="navbar navbar-dark bg-primary mb-4">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">GoodLife - Appointments</span>
+      <a href="index.html" class="btn btn-light btn-sm">Back to Dashboard</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="text-primary">Appointment Management</h4>
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addAppointmentModal">
+        <i class="bi bi-plus-circle"></i> New Appointment
+      </button>
+    </div>
+
+    <table class="table table-striped table-hover shadow-sm">
+      <thead class="table-primary">
+        <tr>
+          <th>ID</th>
+          <th>Patient Name</th>
+          <th>Doctor</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Reason</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="appointmentTableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Add Appointment Modal -->
+  <div class="modal fade" id="addAppointmentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">New Appointment</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="appointmentForm">
+            <div class="mb-3">
+              <label class="form-label">Patient Name</label>
+              <input type="text" id="patientName" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Doctor</label>
+              <input type="text" id="doctorName" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Appointment Date</label>
+              <input type="date" id="date" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Time</label>
+              <input type="time" id="time" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Reason for Appointment</label>
+              <textarea id="reason" class="form-control" rows="2" placeholder="e.g., Routine check-up, consultation, follow-up..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Save Appointment</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const appointmentForm = document.getElementById('appointmentForm');
+    const appointmentTableBody = document.getElementById('appointmentTableBody');
+    let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+
+    function renderAppointments() {
+      appointmentTableBody.innerHTML = '';
+      appointments.forEach((appt, index) => {
+        appointmentTableBody.innerHTML += `
+          <tr>
+            <td>${appt.id}</td>
+            <td>${appt.patientName}</td>
+            <td>${appt.doctor}</td>
+            <td>${appt.date}</td>
+            <td>${appt.time}</td>
+            <td>${appt.reason}</td>
+            <td><span class="badge bg-success">${appt.status}</span></td>
+            <td>
+              <button class="btn btn-sm btn-warning me-1" onclick="rescheduleAppointment(${index})">
+                <i class="bi bi-clock-history"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="cancelAppointment(${index})">
+                <i class="bi bi-x-circle"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    appointmentForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const id = 'AP' + Date.now();
+      const patientName = document.getElementById('patientName').value;
+      const doctor = document.getElementById('doctorName').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const reason = document.getElementById('reason').value;
+
+      appointments.push({ id, patientName, doctor, date, time, reason, status: 'Scheduled' });
+      localStorage.setItem('appointments', JSON.stringify(appointments));
+
+      appointmentForm.reset();
+      renderAppointments();
+      bootstrap.Modal.getInstance(document.getElementById('addAppointmentModal')).hide();
+    });
+
+    function cancelAppointment(index) {
+      if (confirm('Are you sure you want to cancel this appointment?')) {
+        appointments.splice(index, 1);
+        localStorage.setItem('appointments', JSON.stringify(appointments));
+        renderAppointments();
+      }
+    }
+
+    function rescheduleAppointment(index) {
+      const newDate = prompt('Enter new date (YYYY-MM-DD):', appointments[index].date);
+      const newTime = prompt('Enter new time (HH:MM):', appointments[index].time);
+      if (newDate && newTime) {
+        appointments[index].date = newDate;
+        appointments[index].time = newTime;
+        appointments[index].status = 'Rescheduled';
+        localStorage.setItem('appointments', JSON.stringify(appointments));
+        renderAppointments();
+      }
+    }
+
+    renderAppointments();
+  </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoodLife Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8f9fa;
+    }
+    .navbar {
+      background-color: #003366;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      color: #00c896;
+    }
+    .dashboard-header {
+      background: linear-gradient(90deg, #007bff, #00c896);
+      color: white;
+      padding: 50px 0;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .dashboard-header h1 {
+      font-weight: 700;
+    }
+    .card {
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .card:hover {
+      box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+    }
+    .card i {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+    .btn-action {
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 10px 20px;
+      font-weight: 600;
+    }
+    .btn-action:hover {
+      
+      background: lightgray;
+    }
+  </style>
+  <script>
+  
+</script>
+
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <img src="GoodLife_Logo.jpg" alt="logo" width="100px" height="100px" style="border-radius: 100px; margin-right: 30px;">
+      <a class="navbar-brand" href="#">GoodLife</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link active" href="#">DASHBOARD</a></li>
+          <li class="nav-item"><a class="nav-link" href="checkin-checkout.html">CHECK-IN / OUT
+          </a></li>
+          <li class="nav-item"><a class="nav-link" href="settings.html">SETTINGS</a></li>
+          <li class="nav-item"><a href="#" onclick="logout()" class="btn btn-danger btn-sm">LOGOUT</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dashboard Header -->
+  <section class="dashboard-header">
+    <h1>Welcome to GoodLife Hospital System</h1>
+    <p class="lead">Manage your hospital operations all in one place</p>
+  </section>
+
+ 
+      <!-- Dashboard Features -->
+<div class="container pb-5">
+  <div class="row g-4">
+    
+    <!-- Register New Patient -->
+    <div class="col-md-4">
+      <div class="card text-center p-4">
+        <h5 class="fw-bold mb-3">Register New Patient</h5>
+        <p>Register and store new patient records in the system securely.</p>
+        <a href="register.html" class="btn btn-action">Open</a>
+      </div>
+    </div>
+
+     <div class="col-md-4">
+          <div class="card text-center p-4 shadow-sm">
+            <h5 class="mt-3"><b>View Patient Records</b></h5>
+            <p>Edit and delete patients records</p>
+            <a href="records.html" class="btn btn-action">View</a>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+          <div class="card text-center p-4 shadow-sm">
+            <h5 class="mt-3"><b>Doctor on Duty</b></h5>
+            <p>Check which doctor is currently available and on shift</p>
+            <a href="doctors.html" class="btn btn-action">View</a>
+          </div>
+        </a>
+      </div>
+
+    
+ <!-- Appointments-->
+<div class="col-md-4 mb-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-body text-center">
+      <h5 class="card-title fw-bold">Appointments</h5>
+      <p class="card-text text-muted">
+        Manage hospital appointments. Add, reschedule, or cancel patient bookings easily.
+      </p>
+      <a href="appointments.html" class="btn btn-action">
+        Open Appointments
+      </a>
+    </div>
+  </div>
+</div>
+
+
+    <!--Payments -->
+    <div class="col-md-4">
+      <div class="card text-center p-4">
+        <h5 class="fw-bold mb-3">Make Payments</h5>
+        <p>Process billing and manage payment records for patients.</p>
+        <a href="payments.html" class="btn btn-action">Proceed</a>
+      </div>
+    </div>
+
+    <!-- Laboratory -->
+    <div class="col-md-4">
+      <div class="card text-center p-4">
+        <h5 class="fw-bold mb-3">Laboratory Reports</h5>
+        <p>View, upload, or update lab reports directly from the dashboard.</p>
+        <a href="lab.html" class="btn btn-action">Access</a>
+      </div>
+    </div>
+
+    <!-- Manage Staff -->
+    <div class="col-md-4">
+      <div class="card text-center p-4">
+        <h5 class="fw-bold mb-3">Manage Staff</h5>
+        <p>Update staff details, assign roles, and manage departments.</p>
+        <a href="staff.html" class="btn btn-action">Manage</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+  
+
+  <footer class="text-center text-white py-3" style="background-color:#003366;">
+    <p class="mb-0">&copy; 2025 GoodLife Hospital Management System</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  // if (localStorage.getItem("loggedIn") !== true) {
+  //   alert("Please log in to continue.");
+  //   window.location.href = "login.html";
+  // }
+
+  
+  function logout() {
+    if (confirm("Are you sure you want to log out?")) {
+      localStorage.removeItem("loggedIn");
+      alert("Logout successful!");
+      window.location.href = "login.html";
+    }
+  }
+
+  if (!localStorage.getItem("loggedIn")) {
+    window.location.href = "login.html";
+  }
+  </script>
+</body>
+</html>

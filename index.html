@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoodLife Hospital System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    .navbar {
+      background-color: #003366;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      color: #00c896;
+    }
+    .nav-link {
+      color: white;
+      margin-right: 10px;
+      transition: 0.3s;
+    }
+    .nav-link:hover {
+      color: #00c896;
+    }
+
+    .hero {
+      height: 100vh;
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                  url('hospital.jpg') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      flex-direction: column;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #00c896;
+    }
+    .hero p {
+      font-size: 1.3rem;
+      max-width: 600px;
+      margin: 15px auto;
+    }
+    .btn-get-started {
+      background: linear-gradient(90deg, #007bff, #00c896);
+      color: white;
+      border-radius: 30px;
+      padding: 10px 25px;
+      border: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .btn-get-started:hover {
+      transform: scale(1.05);
+      background: linear-gradient(90deg, #00c896, #007bff);
+    }
+
+    #about {
+      background-color: #f9f9f9;
+      padding: 80px 0;
+    }
+
+    #services {
+      padding: 80px 0;
+    }
+    .card {
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+    }
+
+    footer {
+      background-color: #003366;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <img src="GoodLife_Logo.jpg" alt="logo" width="100px" height="100px" style="border-radius: 100px; margin-right: 30px;">
+      <a class="navbar-brand" href="#">GoodLife</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#services">Modules</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          <li class="nav-item"><a class="nav-link btn btn-outline-light px-3 ms-2" href="login.html">Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section style="background: rgba(0, 0, 0, 0.5) url(hospital.jpg);" class="hero">
+    
+    <h1>GoodLife Hospital System</h1>
+    <p>Empowering hospitals with a secure, efficient, and paperless management platform.</p>
+    <a href="login.html" class="btn btn-get-started mt-3">Access System</a>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="container text-center">
+      <h2 class="fw-bold text-primary mb-4">About GoodLife</h2>
+      <p class="lead mx-auto" style="max-width:800px;">
+        GoodLife is an integrated hospital management system that digitizes and organizes all hospital activities — 
+        from patient records to staff management, billing, appointments, and laboratory reports. 
+        Designed for efficiency, accuracy, and accessibility, it enables hospitals to operate seamlessly on the web.
+      </p>
+    </div>
+  </section>
+
+  <!-- Services/Modules -->
+  <section id="services">
+    <div class="container text-center">
+      <h2 class="fw-bold text-primary mb-5">Core Modules</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card p-4">
+            <h5 class="mt-3 fw-bold">Patient Records</h5>
+            <p>Maintain digital patient files with history, medications, and reports.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-4">
+            <h5 class="mt-3 fw-bold">Appointments</h5>
+            <p>Manage and track doctor schedules and patient appointments efficiently.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-4">
+            <h5 class="mt-3 fw-bold">Staff Management</h5>
+            <p>Organize staff data, departments, and duty rosters all in one platform.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-4">
+            <h5 class="mt-3 fw-bold">Laboratory Reports</h5>
+            <p>Record and view lab test results directly in patient profiles.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-4">
+            <h5 class="mt-3 fw-bold">Billing & Payments</h5>
+            <p>Generate invoices, process payments, and track hospital finances easily.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-4">
+            <h5 class="mt-3 fw-bold">Analytics Dashboard</h5>
+            <p>View real-time hospital metrics and performance insights.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacts -->
+  <section id="contact" class="py-5 bg-light">
+    <div class="container text-center">
+      <h2 class="fw-bold text-primary mb-3">Contact Us</h2>
+      <p>Email: omolaraowoseni2021@gmail.com</p>
+      <p>Instagram: <a href="https://instagram.com/_bigrace" target="_blank">@_bigrace</a></p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p class="mb-0">© 2025 GoodLife Hospital Management System | All Rights Reserved</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

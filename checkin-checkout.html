@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Check-In & Check-Out</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  #ward{
+    margin-right: 30px;
+  }
+</style>
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-primary">
+<div class="container-fluid">
+<span class="navbar-brand">GoodLife Hospital - Check In/Out</span>
+<a href="ward-management.html" class="btn btn-light" id="ward">Ward Management</a>
+<a href="dashboard.html" class="btn btn-success">Back to dashboard</a>
+</div>
+</nav>
+
+<div class="container mt-4">
+<div class="card shadow p-4">
+<h3>Patient Check-In & Check-Out</h3>
+<table class="table table-bordered mt-3">
+<thead>
+<tr>
+<th>Name</th>
+<th>Ward</th>
+<th>Check In</th>
+<th>Check Out</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="checkTableBody"></tbody>
+</table>
+</div>
+</div>
+
+<div class="modal fade" id="wardModal">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<h5>Assign Ward</h5>
+</div>
+<div class="modal-body">
+<select id="wardInput" class="form-select"></select>
+<input type="hidden" id="currentPatient">
+</div>
+<div class="modal-footer">
+<button class="btn btn-success" onclick="saveWardNumber()">Save</button>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+function loadAvailableWards(){
+const wards=JSON.parse(localStorage.getItem('wards'))||[];
+const select=document.getElementById('wardInput');
+select.innerHTML='';
+
+wards.forEach(ward=>{
+const available=ward.capacity-ward.occupied;
+if(available>0){
+select.innerHTML+=`<option value="${ward.wardNumber}">${ward.wardNumber} (${available} beds available)</option>`;
+}
+});
+}
+
+function loadCheckIns(){
+const checkRecords=JSON.parse(localStorage.getItem('checkRecords'))||[];
+const tbody=document.getElementById('checkTableBody');
+tbody.innerHTML='';
+
+checkRecords.forEach((record,index)=>{
+tbody.innerHTML+=`
+<tr>
+<td>${record.patientName}</td>
+<td>${record.wardNumber||'Not Assigned'}</td>
+<td>${record.checkInTime}</td>
+<td>${record.checkOutTime||'Pending'}</td>
+<td>${record.checkOutTime?'Checked Out':'Admitted'}</td>
+<td>
+${!record.wardNumber && !record.checkOutTime ? `<button class='btn btn-info btn-sm' onclick="openWardModal('${record.patientName}')">Assign Ward</button>`:''}
+${!record.checkOutTime ? `<button class='btn btn-warning btn-sm' onclick='checkOutPatient(${index})'>Check Out</button>`:''}
+</td>
+</tr>`;
+});
+}
+
+function openWardModal(name){
+document.getElementById('currentPatient').value=name;
+loadAvailableWards();
+new bootstrap.Modal(document.getElementById('wardModal')).show();
+}
+
+function saveWardNumber(){
+const ward=document.getElementById('wardInput').value;
+const patient=document.getElementById('currentPatient').value;
+
+let records=JSON.parse(localStorage.getItem('checkRecords'))||[];
+let wards=JSON.parse(localStorage.getItem('wards'))||[];
+
+const patientIndex=records.findIndex(r=>r.patientName===patient && !r.checkOutTime);
+const wardIndex=wards.findIndex(w=>w.wardNumber===ward);
+
+if(patientIndex!==-1 && wardIndex!==-1){
+records[patientIndex].wardNumber=ward;
+wards[wardIndex].occupied++;
+localStorage.setItem('checkRecords',JSON.stringify(records));
+localStorage.setItem('wards',JSON.stringify(wards));
+}
+
+loadCheckIns();
+bootstrap.Modal.getInstance(document.getElementById('wardModal')).hide();
+}
+
+function checkOutPatient(index){
+let records=JSON.parse(localStorage.getItem('checkRecords'))||[];
+let wards=JSON.parse(localStorage.getItem('wards'))||[];
+
+const wardName=records[index].wardNumber;
+const wardIndex=wards.findIndex(w=>w.wardNumber===wardName);
+
+if(wardIndex!==-1 && wards[wardIndex].occupied>0){
+wards[wardIndex].occupied--;
+}
+
+records[index].checkOutTime=new Date().toLocaleString();
+
+localStorage.setItem('checkRecords',JSON.stringify(records));
+localStorage.setItem('wards',JSON.stringify(wards));
+
+loadCheckIns();
+}
+
+loadCheckIns();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

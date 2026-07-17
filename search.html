@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-fluid">
+
+<h3 class="text-primary mb-3">Search Patient</h3>
+
+<input 
+type="text" 
+id="searchInput" 
+class="form-control mb-4"
+placeholder="Search by Name or Registration Number"
+onkeyup="searchPatient()"
+>
+
+<div id="searchResults"></div>
+
+</div>
+<script>
+    function searchPatient(){
+
+const input = document.getElementById("searchInput").value.toLowerCase();
+
+const patients = JSON.parse(localStorage.getItem("patients")) || [];
+
+const results = document.getElementById("searchResults");
+
+results.innerHTML = "";
+
+const filtered = patients.filter(p => 
+p.name.toLowerCase().includes(input) || 
+p.id.toLowerCase().includes(input)
+);
+
+filtered.forEach(patient => {
+
+results.innerHTML += `
+
+<div class="card mb-2 p-3" style="cursor:pointer"
+onclick="openPatient('${patient.id}')">
+
+<strong>${patient.name}</strong><br>
+
+Registration No: ${patient.id}
+
+</div>
+
+`;
+
+});
+
+}
+</script>
+</body>
+</html>

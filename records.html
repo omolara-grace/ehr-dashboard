@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Patient Records - GoodLife</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body style="background-color:#f8f9fa;">
+
+<nav class="navbar navbar-dark bg-primary mb-4">
+<div class="container-fluid">
+<span class="navbar-brand mb-0 h1">GoodLife - Patient Records</span>
+<a href="dashboard.html" class="btn btn-light btn-sm">Back to Dashboard</a>
+</div>
+</nav>
+
+<div class="container-fluid px-4">
+
+<div class="card shadow p-4">
+
+<h4 class="mb-3 text-center text-primary">Patient Records</h4>
+
+
+<h5 class="text-primary mb-3">Search Patient</h5>
+
+<input
+type="text"
+id="searchInput"
+class="form-control mb-4"
+placeholder="Search by Name or Registration Number"
+onkeyup="searchPatient()"
+>
+
+<div id="searchResults"></div>
+
+
+<div class="table-responsive">
+
+<table class="table table-striped table-hover align-middle">
+
+<thead class="table-primary text-center">
+
+<tr>
+
+<th>ID</th>
+<th>Title</th>
+<th>Full Name</th>
+<th>Age</th>
+<th>Gender</th>
+<th>Phone</th>
+<th>Passport</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody id="recordTableBody"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+function loadRecords(){
+
+const patients = JSON.parse(localStorage.getItem("patients")) || [];
+
+const tableBody = document.getElementById("recordTableBody");
+
+tableBody.innerHTML = "";
+
+if(patients.length === 0){
+
+tableBody.innerHTML = `
+<tr>
+<td colspan="8" class="text-center text-muted">
+No patient records found.
+</td>
+</tr>
+`;
+
+return;
+
+}
+
+patients.forEach((patient,index)=>{
+
+tableBody.innerHTML += `
+
+<tr onclick="viewPatient('${patient.id}')" style="cursor:pointer">
+
+<td><strong>${patient.id}</strong></td>
+
+<td>${patient.title}</td>
+
+<td>${patient.name}</td>
+
+<td>${patient.age}</td>
+
+<td>${patient.gender}</td>
+
+<td>${patient.number}</td>
+
+<td>
+<img src="${patient.passport}" width="60" height="60"
+style="object-fit:cover;border-radius:8px;">
+</td>
+
+<td class="text-center">
+
+<div class="d-flex justify-content-center gap-1">
+
+<button class="btn btn-success btn-sm"
+onclick="checkInPatient('${patient.id}');event.stopPropagation()">
+
+Check-In
+
+</button>
+
+<button class="btn btn-warning btn-sm"
+onclick="editPatient('${patient.id}');event.stopPropagation()">
+
+Edit
+
+</button>
+
+<button class="btn btn-danger btn-sm"
+onclick="deleteRecord(${index});event.stopPropagation()">
+
+Delete
+
+</button>
+
+</div>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+
+function deleteRecord(index){
+
+let patients = JSON.parse(localStorage.getItem("patients")) || [];
+
+if(confirm("Are you sure you want to delete this record?")){
+
+patients.splice(index,1);
+
+localStorage.setItem("patients",JSON.stringify(patients));
+
+loadRecords();
+
+}
+
+}
+
+
+
+function editPatient(patientId){
+
+const patients = JSON.parse(localStorage.getItem("patients")) || [];
+
+const patient = patients.find(p => p.id == patientId);
+
+if(!patient){
+alert("Patient not found!");
+return;
+}
+
+localStorage.setItem("editPatient", JSON.stringify(patient));
+
+window.location.href = "edit_patient.html";
+
+}
+
+
+function checkInPatient(patientId){
+
+const patients = JSON.parse(localStorage.getItem("patients")) || [];
+
+const patient = patients.find(p=>p.id === patientId);
+
+if(!patient){
+
+alert("Patient not found!");
+
+return;
+
+}
+
+let checkRecords = JSON.parse(localStorage.getItem("checkRecords")) || [];
+
+const existing = checkRecords.find(r=>r.patientId === patientId && !r.checkOutTime);
+
+if(existing){
+
+alert("This patient is already checked in!");
+
+return;
+
+}
+
+const newCheck = {
+
+patientId,
+
+patientName: patient.name,
+
+roomNumber: "Unassigned",
+
+checkInTime: new Date().toLocaleString(),
+
+checkOutTime: ""
+
+};
+
+checkRecords.push(newCheck);
+
+localStorage.setItem("checkRecords",JSON.stringify(checkRecords));
+
+alert("Patient checked in successfully!");
+
+}
+
+
+
+function searchPatient(){
+
+const input = document.getElementById("searchInput").value.toLowerCase();
+
+const patients = JSON.parse(localStorage.getItem("patients")) || [];
+
+const results = document.getElementById("searchResults");
+
+results.innerHTML = "";
+
+if(input === "") return;
+
+const filtered = patients.filter(p =>
+p.name.toLowerCase().includes(input) ||
+p.id.toLowerCase().includes(input)
+);
+
+if(filtered.length === 0){
+
+results.innerHTML = `<p class="text-muted">No patient found.</p>`;
+
+return;
+
+}
+
+filtered.forEach(patient=>{
+
+results.innerHTML += `
+
+<div class="card mb-2 p-3 shadow-sm"
+style="cursor:pointer"
+onclick="openPatient('${patient.id}')">
+
+<strong>${patient.name}</strong><br>
+
+Registration No: ${patient.id}
+
+</div>
+
+`;
+
+});
+
+}
+
+
+
+function openPatient(patientId){
+
+const patients = JSON.parse(localStorage.getItem("patients")) || [];
+
+const patient = patients.find(p=>p.id === patientId);
+
+localStorage.setItem("selectedPatient",JSON.stringify(patient));
+
+window.location.href="patient_profile.html";
+
+}
+
+
+
+function viewPatient(patientId){
+
+openPatient(patientId);
+
+}
+
+
+loadRecords();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Learn HTML5 basics.">
+  <title>Doctors On Duty - GoodLife</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .doctor-card {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .doctor-card:hover {
+      transform: scale(1.02);
+    }
+    .doctor-photo {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .status-badge {
+      font-size: 0.8rem;
+      padding: 0.3em 0.6em;
+      border-radius: 10px;
+      color: white;
+    }
+    .on-duty {
+      background-color: #28a745;
+    }
+    .off-duty {
+      background-color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-dark bg-primary mb-4">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">GoodLife - Doctors On Duty</span>
+      <a href="dashboard.html" class="btn btn-light btn-sm">Back to Dashboard</a>
+    </div>
+  </nav>
+
+  <div class="container mb-3 text-end">
+    <a href="doctor_register.html" class="btn btn-success mb-4">➕ Add New Doctor</a>
+  </div>
+
+  <div class="container">
+    <div class="row" id="doctorGrid"></div>
+  </div>
+
+  <script>
+    function loadDoctors() {
+      const doctorGrid = document.getElementById("doctorGrid");
+      const doctors = JSON.parse(localStorage.getItem("doctors")) || [];
+      doctorGrid.innerHTML = "";
+
+      if (doctors.length === 0) {
+        doctorGrid.innerHTML = `<p class='text-center text-muted'>No doctor records found.</p>`;
+        return;
+      }
+
+      doctors.forEach((doc, index) => {
+        const statusClass = doc.onDuty ? "on-duty" : "off-duty";
+        const statusText = doc.onDuty ? "On Duty" : "Off Duty";
+
+        const card = `
+          <div class="col-md-4 mb-4">
+            <div class="card doctor-card">
+              <img src="${doc.passport}" class="doctor-photo" alt="Doctor Photo">
+              <div class="card-body">
+                <h5 class="card-title">${doc.name}</h5>
+                <p class="card-text mb-1"><strong>Specialization:</strong> ${doc.specialization}</p>
+                <p class="card-text mb-1"><strong>Phone:</strong> ${doc.phone}</p>
+                <p class="card-text mb-1"><strong>Email:</strong> ${doc.email}</p>
+                <p class="card-text mb-1"><strong>Shift:</strong> ${doc.shift}</p>
+                <span class="status-badge ${statusClass}">${statusText}</span>
+                <hr>
+                <button class="btn btn-danger btn-sm" onclick="deleteDoctor(${index})">Delete</button>
+              </div>
+            </div>
+          </div>`;
+        doctorGrid.innerHTML += card;
+      });
+    }
+
+    function deleteDoctor(index) {
+      let doctors = JSON.parse(localStorage.getItem("doctors")) || [];
+      if (confirm("Are you sure you want to delete this doctor?")) {
+        doctors.splice(index, 1);
+        localStorage.setItem("doctors", JSON.stringify(doctors));
+        loadDoctors();
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadDoctors);
+  </script>
+</body>
+</html>
